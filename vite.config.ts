@@ -8,12 +8,16 @@ export default defineConfig({
       'Content-Security-Policy': "script-src 'self' 'unsafe-eval' 'unsafe-inline';"
     }
   },
-  optimizeDeps: {
-    exclude: ['sql.js']
-  },
   build: {
+    target: 'es2015',
     rollupOptions: {
-      external: ['sql.js']
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          mui: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
+          dnd: ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities']
+        }
+      }
     }
   }
 }) 
