@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Container, Box, Typography, CircularProgress } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
-import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';
+import { DndContext, DragEndEvent, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import ShiftStrip from './components/ShiftStrip';
 import ControlPanel from './components/ControlPanel';
@@ -12,6 +12,16 @@ function App() {
   const [shifts, setShifts] = useState<Shift[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Enable hold-and-drag for touch screens
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 250, // ms to hold before drag
+        tolerance: 5 // px movement allowed before drag
+      }
+    })
+  );
 
   // Load shifts from database on component mount
   useEffect(() => {
@@ -246,7 +256,7 @@ function App() {
           lastShiftEndTime={shifts.length > 0 ? shifts[shifts.length - 1].endTime : new Date()} 
         />
         <Box sx={{ mt: 3 }}>
-          <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
             <SortableContext items={sortedShifts.map(s => s.id)} strategy={verticalListSortingStrategy}>
               {sortedShifts.map(shift => (
                 <ShiftStrip
