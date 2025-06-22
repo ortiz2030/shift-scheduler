@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Box, Typography, CircularProgress } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';

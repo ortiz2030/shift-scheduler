@@ -1,7 +1,6 @@
-import React, { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { Box, Button, Dialog, DialogTitle, DialogContent, TextField, DialogActions } from '@mui/material';
 import { Add } from '@mui/icons-material';
-import { format } from 'date-fns';
 import { Shift } from '../types/types';
 
 interface ControlPanelProps {
